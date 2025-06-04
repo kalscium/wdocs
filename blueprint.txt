@@ -1,0 +1,31 @@
+=== BLUEPRINTS FOR WDOCS ===
+* exe (main.zig): the cli portion of the program, collects the data into
+                  memory, calls functions from lib and handles/reports any
+				  errors.
+* lib (root.zig): the parsing of the data provided, also generates errors.
+
+=== EXE ===
+* main.zig
+
+=== LIB ===
+* error.zig: for generating and reporting any errors found
+* wdoc.zig:  for word-document specific parsing
+* meta.zig:  for parsing metadata (and also pages)
+* gen.zig:   general parsing functions (like collectWord)
+* func.zig:  for parsing 'functions'
+
+=== STATE ===
+* error_context: pointer to a error context in which the metadata/context for
+                 an error can be set and propagated
+				 (and used for proper error reporting)
+* int_buff (input buffer): just a slice of all the data
+* cursor: mutable pointer to an index into the input buffer
+* out_buff (output buffer): a writer for the outputted markdown
+
+=== STAGES ===
+* (cli) collect the all the necessary data and call lib functions
+-- lib onwards
+* parse for the #page token and break the data into sections
+* include the sections of any other files
+* sort
+* iterate through and convert to markdown
