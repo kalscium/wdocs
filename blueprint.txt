@@ -8,11 +8,10 @@
 * main.zig
 
 === LIB ===
-* error.zig: for generating and reporting any errors found
-* wdoc.zig:  for word-document specific parsing
-* meta.zig:  for parsing metadata (and also pages)
-* gen.zig:   general parsing functions (like collectWord)
-* func.zig:  for parsing 'functions'
+* error.zig:     for generating and reporting any errors found
+* wdoc.zig:      for word-document specific parsing
+* metadata.zig:  for parsing metadata (and also pages)
+* func.zig:      for parsing 'functions'
 
 === STATE ===
 * error_context: pointer to a error context in which the metadata/context for
