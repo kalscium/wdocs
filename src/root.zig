@@ -1,14 +1,17 @@
 // pub const metadata = @import("metadata.zig");
 
 const std = @import("std");
+const metadata = @import("metadata.zig");
 
-// // for tests
-// comptime {
-//     _ = metadata;
-// }
+// for tests
+comptime {
+    _ = metadata;
+}
 
 /// Collects the next word into a slice (a-zA-Z_-), assuming the cursor
 /// is on the first character of the word
+/// 
+/// Returns an empty slice upon no match.
 pub fn collectWord(slice: []const u8, idx: *usize) []const u8 {
     const start_idx = idx.*;
     while (idx.* < slice.len) : (idx.* += 1) {
@@ -21,7 +24,7 @@ pub fn collectWord(slice: []const u8, idx: *usize) []const u8 {
 
 /// Collects the next word into a slice (a-zA-Z_-), assuming the cursor
 /// is on the first character of the word
-pub fn collectNumber(slice: []const u8, idx: *usize) usize {
+pub fn collectNumber(slice: []const u8, idx: *usize) ?usize {
     const start_idx = idx.*;
     while (idx.* < slice.len) : (idx.* += 1) {
         const char = slice[idx.*];
@@ -29,6 +32,10 @@ pub fn collectNumber(slice: []const u8, idx: *usize) usize {
             break;
     }
     const raw_num = slice[start_idx..idx.*];
+
+    // if there is no match, just return null
+    if (raw_num.len == 0)
+        return null;
 
     // convert string to a number
     var number: usize = 0;
