@@ -16,4 +16,14 @@ pub fn main() !void {
         
         std.debug.print("word: {s}\n", .{word});
     }
+
+    const metadata = wdocs.err.Metadata{
+        .error_msg = "this code doesn't work",
+        .span_start = 33,
+        .context_span_start = 31,
+        .context_span_end = 42,
+        .span_end = 35,
+        .context = "these 'l's are in hello",
+    };
+    try wdocs.err.report(std.io.getStdErr().writer(), 12, metadata, "foo.bar", "\n123456789012345678901234567890hello world123456789012345678901234567890\n");
 }

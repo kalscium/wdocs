@@ -8,7 +8,7 @@
 * main.zig
 
 === LIB ===
-* error.zig:     for generating and reporting any errors found
+* err.zig:     for generating and reporting any errors found
 * wdoc.zig:      for word-document specific parsing
 * metadata.zig:  for parsing metadata (and also pages)
 * func.zig:      for parsing 'functions'
@@ -28,3 +28,12 @@
 * include the sections of any other files
 * sort
 * iterate through and convert to markdown
+
+=== ERRORS ===
+errors will look like this:
+	error: file not found
+	--> foo.bar
+	   --+( #page 2 )
+	12 | a missing image here: #image(missing.png)
+	   :                       ~~~~~~~^^^^^^^^^^^~ in this included image
+	+---

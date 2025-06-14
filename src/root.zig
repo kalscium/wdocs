@@ -1,7 +1,8 @@
 // pub const metadata = @import("metadata.zig");
 
 const std = @import("std");
-const metadata = @import("metadata.zig");
+pub const metadata = @import("metadata.zig");
+pub const err = @import("err.zig");
 
 // for tests
 comptime {
