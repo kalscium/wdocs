@@ -26,4 +26,14 @@ pub fn main() !void {
         .context = "these 'l's are in hello",
     };
     try wdocs.err.report(std.io.getStdErr().writer(), 12, metadata, "foo.bar", "\n123456789012345678901234567890hello world123456789012345678901234567890\n");
+
+    const raw = "#discarded-tag #page invalid-page";
+    idx = 0;
+    var err_meta: wdocs.err.Metadata = .{};
+    const page = wdocs.metadata.parsePageNum(raw, &idx, &err_meta) catch |err| {
+        if (err == wdocs.err.ParsingError.ParsingError)
+            try wdocs.err.report(std.io.getStdErr().writer(), null, err_meta, "example.foo", raw);
+        return err;
+    };
+    std.debug.print("found page: {?}\n", .{page});
 }

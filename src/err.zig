@@ -59,7 +59,7 @@ pub fn report(writer: anytype, page_num: ?usize, metadata: Metadata, filename: [
     if (page_num) |num|
         try std.fmt.format(writer, "\x1B[32m#page {} \x1B[34;1m)\n", .{num})
     else
-        try writer.writeAll("\x1B[32unknown page \x1B[34;1m)\n");
+        try writer.writeAll("\x1B[30;1munknown page \x1B[34;1m)\n");
 
     // write the spacer line
     try writer.writeByteNTimes(' ', lines_n_len + 1);
@@ -75,13 +75,13 @@ pub fn report(writer: anytype, page_num: ?usize, metadata: Metadata, filename: [
     // write the context contents & error contents
     try std.fmt.format(writer, "\x1B[36m{s}\x1B[31m{s}\x1B[36m{s}\x1B[0m", .{
         contents[metadata.context_span_start..metadata.span_start],
-        contents[metadata.span_start..metadata.span_end],
-        contents[metadata.span_end..metadata.context_span_end],
+        contents[@min(contents.len, metadata.span_start)..@min(contents.len, metadata.span_end)],
+        contents[@min(contents.len, metadata.span_end)..@min(contents.len, metadata.context_span_end)],
     });
 
     // write the ending contents
     const sc_end = @min(line_cutoff, line_end - metadata.context_span_end);
-    try writer.writeAll(contents[metadata.context_span_end..metadata.context_span_end+sc_end]);
+    try writer.writeAll(contents[@min(contents.len, metadata.context_span_end)..@min(contents.len, metadata.context_span_end+sc_end)]);
 
     // write more structure stuff & padding
     try writer.writeAll("\x1B[30;1m...\n");
