@@ -17,7 +17,7 @@ pub fn main() !void {
         std.debug.print("word: {s}\n", .{word});
     }
 
-    const metadata = wdocs.err.Metadata{
+    const test_err_meta = wdocs.err.Metadata{
         .error_msg = "this code doesn't work",
         .span_start = 33,
         .context_span_start = 31,
@@ -25,9 +25,9 @@ pub fn main() !void {
         .span_end = 35,
         .context = "these 'l's are in hello",
     };
-    try wdocs.err.report(std.io.getStdErr().writer(), 12, metadata, "foo.bar", "\n123456789012345678901234567890hello world123456789012345678901234567890\n");
+    try wdocs.err.report(std.io.getStdErr().writer(), 12, test_err_meta, "foo.bar", "\n123456789012345678901234567890hello world123456789012345678901234567890\n");
 
-    const raw = "#discarded-tag #page invalid-page";
+    const raw = "#page 12 \n #title a new world. \n #author dave\n#date 2025-06-15  \n#topic everything is here now";
     idx = 0;
     var err_meta: wdocs.err.Metadata = .{};
     const page = wdocs.metadata.parsePageNum(raw, &idx, &err_meta) catch |err| {
@@ -36,4 +36,11 @@ pub fn main() !void {
         return err;
     };
     std.debug.print("found page: {?}\n", .{page});
+    var metadata = wdocs.metadata.Metadata{};
+    while (!metadata.isComplete()) {
+        metadata.parse(raw, &idx, &err_meta) catch |err| {
+            try wdocs.err.report(std.io.getStdErr().writer(), page, err_meta, "example.foo", raw);
+            return err;
+        };
+    }
 }
