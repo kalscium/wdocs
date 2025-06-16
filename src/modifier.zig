@@ -62,6 +62,10 @@ pub fn parseModifier(writer: anytype, slice: []const u8, idx: *usize, err_meta: 
 
     if (std.mem.eql(u8, modifier, "title")) {
         try std.fmt.format(writer, "\n## {s}\n", .{paren});
+    } else if (std.mem.eql(u8, modifier, "bold")) {
+        try std.fmt.format(writer, "**{s}**", .{paren});
+    } else if (std.mem.eql(u8, modifier, "itallic")) {
+        try std.fmt.format(writer, "*{s}*", .{paren});
     } else if (std.mem.eql(u8, modifier, "red")) {
         try std.fmt.format(writer, "<span style=\"color: #CC241D;\">{s}</span>", .{paren});
     } else if (std.mem.eql(u8, modifier, "blue")) {
