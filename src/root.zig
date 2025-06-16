@@ -4,11 +4,14 @@ const std = @import("std");
 pub const metadata = @import("metadata.zig");
 pub const err = @import("err.zig");
 pub const modifier = @import("modifier.zig");
+pub const book = @import("book.zig");
 
 // for tests
 comptime {
     _ = metadata;
     _ = err;
+    _ = modifier;
+    _ = book;
 }
 
 /// Collects the next word into a slice (a-zA-Z_-), assuming the cursor

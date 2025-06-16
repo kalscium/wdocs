@@ -81,7 +81,7 @@ pub fn parseModifier(writer: anytype, slice: []const u8, idx: *usize, err_meta: 
             .span_end = merr_span_end,
             .context_span_end = idx.*,
             .error_msg = "invalid modifier",
-            .context = "expected one of #title, #red, #blue, #green, #yellow",
+            .context = "expected one of #title, #bold, #itallic, #red, #blue, #green, #yellow",
         };
         return error.ParsingError;
     }
