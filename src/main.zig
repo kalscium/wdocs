@@ -27,7 +27,7 @@ pub fn main() !void {
     };
     try wdocs.err.report(std.io.getStdErr().writer(), 12, test_err_meta, "foo.bar", "\n123456789012345678901234567890hello world123456789012345678901234567890\n");
 
-    const raw = "#page 12 \n #title a new world. \n #author dave\n#date 2025-06-15  \n#topic everything is here now";
+    const raw = "#page 12 \n #title a new world. \n #author dave\n#date 2025-06-15  \n#topic everything is here now\nsome #red((prett(y)) red text)\nhi";
     idx = 0;
     var err_meta: wdocs.err.Metadata = .{};
     const page = wdocs.metadata.parsePageNum(raw, &idx, &err_meta) catch |err| {
@@ -42,5 +42,16 @@ pub fn main() !void {
             try wdocs.err.report(std.io.getStdErr().writer(), page, err_meta, "example.foo", raw);
             return err;
         };
+    }
+
+    // try parse paren
+    while (idx < raw.len) : (idx += 1) {
+        if (raw[idx] == '(') {
+            const paren = wdocs.modifier.parseParen(idx, raw, &idx, &err_meta) catch |err| {
+                try wdocs.err.report(std.io.getStdErr().writer(), page, err_meta, "example.foo", raw);
+                return err;
+            };
+            std.debug.print("found inside parentheses: {s}\n", .{paren});
+        } 
     }
 }

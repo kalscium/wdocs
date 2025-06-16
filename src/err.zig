@@ -69,18 +69,18 @@ pub fn report(writer: anytype, page_num: ?usize, metadata: Metadata, filename: [
     try std.fmt.format(writer, "\x1B[0m\x1B[33m{} \x1B[34;1m| \x1B[30;1m...\x1B[0m", .{lines});
 
     // write the starting contents
-    const sc_start = @min(line_cutoff, metadata.context_span_start - line_start);
+    const sc_start = @min(line_cutoff, metadata.context_span_start -| line_start);
     try writer.writeAll(contents[metadata.context_span_start-sc_start..metadata.context_span_start]);
 
     // write the context contents & error contents
     try std.fmt.format(writer, "\x1B[36m{s}\x1B[31m{s}\x1B[36m{s}\x1B[0m", .{
         contents[metadata.context_span_start..metadata.span_start],
-        contents[@min(contents.len, metadata.span_start)..@min(contents.len, metadata.span_end)],
-        contents[@min(contents.len, metadata.span_end)..@min(contents.len, metadata.context_span_end)],
+        contents[@min(line_end, metadata.span_start)..@min(line_end, metadata.span_end)],
+        contents[@min(line_end, metadata.span_end)..@min(line_end, metadata.context_span_end)],
     });
 
     // write the ending contents
-    const sc_end = @min(line_cutoff, line_end - metadata.context_span_end);
+    const sc_end = @min(line_cutoff, line_end -| metadata.context_span_end);
     try writer.writeAll(contents[@min(contents.len, metadata.context_span_end)..@min(contents.len, metadata.context_span_end+sc_end)]);
 
     // write more structure stuff & padding
