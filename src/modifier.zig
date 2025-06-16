@@ -62,6 +62,14 @@ pub fn parseModifier(writer: anytype, slice: []const u8, idx: *usize, err_meta: 
 
     if (std.mem.eql(u8, modifier, "title")) {
         try std.fmt.format(writer, "\n## {s}\n", .{paren});
+    } else if (std.mem.eql(u8, modifier, "red")) {
+        try std.fmt.format(writer, "<span style=\"color: #CC241D;\">{s}</span>", .{paren});
+    } else if (std.mem.eql(u8, modifier, "blue")) {
+        try std.fmt.format(writer, "<span style=\"color: #458588;\">{s}</span>", .{paren});
+    } else if (std.mem.eql(u8, modifier, "greeen")) {
+        try std.fmt.format(writer, "<span style=\"color: #98971A;\">{s}</span>", .{paren});
+    } else if (std.mem.eql(u8, modifier, "yellow")) {
+        try std.fmt.format(writer, "<span style=\"color: #D79921;\">{s}</span>", .{paren});
     } else {
         err_meta.* = .{
             .context_span_start = ctxt_span_start,
@@ -69,7 +77,7 @@ pub fn parseModifier(writer: anytype, slice: []const u8, idx: *usize, err_meta: 
             .span_end = merr_span_end,
             .context_span_end = idx.*,
             .error_msg = "invalid modifier",
-            .context = "expected one of #title",
+            .context = "expected one of #title, #red, #blue, #green, #yellow",
         };
         return error.ParsingError;
     }

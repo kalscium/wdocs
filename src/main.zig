@@ -27,7 +27,7 @@ pub fn main() !void {
     };
     try wdocs.err.report(std.io.getStdErr().writer(), 12, test_err_meta, "foo.bar", "\n123456789012345678901234567890hello world123456789012345678901234567890\n");
 
-    const raw = "#page 12 \n #title a new world. \n #author dave\n#date 2025-06-15  \n#topic everything is here now\n#title(a grand title)\n#dave is cool\nsome #red((prett(y)) red text)\nhi";
+    const raw = "#page 12 \n #title a new world. \n #author dave\n#date 2025-06-15  \n#topic everything is here now\n#title(a grand title)\nsome #red((prett(y)) red text)\nhi";
     idx = 0;
     var err_meta: wdocs.err.Metadata = .{};
     const page = wdocs.metadata.parsePageNum(raw, &idx, &err_meta) catch |err| {
