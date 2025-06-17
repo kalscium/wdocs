@@ -5,6 +5,7 @@ pub const metadata = @import("metadata.zig");
 pub const err = @import("err.zig");
 pub const modifier = @import("modifier.zig");
 pub const book = @import("book.zig");
+pub const xml = @import("xml.zig");
 
 // for tests
 comptime {
@@ -12,6 +13,7 @@ comptime {
     _ = err;
     _ = modifier;
     _ = book;
+    _ = xml;
 }
 
 /// Collects the next word into a slice (a-zA-Z_-), assuming the cursor
