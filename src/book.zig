@@ -30,10 +30,10 @@ pub fn parseContents(writer: anytype, slice: []const u8, idx: *usize, err_meta: 
         }
 
         // parse &foos (from antiword)
+        const amp_start = idx.*;
         if (slice[idx.*] == '&') {
-            idx.* += 1;
+            idx.* += 1; // skip &
             const word = wdocs.collectWord(slice, idx);
-            // skip the `;` after the word aswell
             if (std.mem.eql(u8, word, "amp")) {
                 try writer.writeByte('&');
                 continue;
@@ -44,7 +44,7 @@ pub fn parseContents(writer: anytype, slice: []const u8, idx: *usize, err_meta: 
                 try writer.writeByte('>');
                 continue;
             } else {
-                idx.* -= 1;
+                idx.* = amp_start;
             }
         }
 

@@ -27,7 +27,7 @@ pub const Metadata = struct {
 /// Reports an error to a writer from the page number, metadata, filename and file contents
 pub fn report(writer: anytype, page_num: ?usize, metadata: Metadata, filename: []const u8, contents: []const u8) !void {
     // how many characters at the start of the line to include (also applies to the end)
-    const line_cutoff = 20; // 16 feels a bit too short, 24 a bit too long
+    const line_cutoff = 24;
 
     try std.fmt.format(writer, "\x1B[31;1merror:\x1B[0m {s}\n\x1B[35;1m-->\x1B[0m {s}\n", .{ metadata.error_msg, filename });
 
@@ -36,7 +36,7 @@ pub fn report(writer: anytype, page_num: ?usize, metadata: Metadata, filename: [
     // note: also assumes the spans are valid
     var lines: usize = 1;
     var line_start: usize = 0;
-    var line_end: usize = undefined;
+    var line_end: usize = contents.len;
     for (contents, 0..) |char, i| {
         if (char == '\n') {
             lines += 1;

@@ -106,6 +106,7 @@ pub const Metadata = struct {
 
 /// Parses the page number, discarded everything before it.
 /// If no page number is found, then it will return null.
+/// The cover page is defined as the page with number 0.
 pub fn parsePageNum(slice: []const u8, idx: *usize, err_meta: *err.Metadata) err.ParsingError!?usize {
     // skip all characters until the '#' token is found
     while (idx.* < slice.len) : (idx.* += 1) {
@@ -118,6 +119,8 @@ pub fn parsePageNum(slice: []const u8, idx: *usize, err_meta: *err.Metadata) err
     // collect the tag, and ensure it's of the right kind
     const terr_span_start = idx.*;
     const tag = wdocs.collectWord(slice, idx);
+    if (std.mem.eql(u8, tag, "cover")) // cover pages are just pages with number 0
+        return 0;
     if (!std.mem.eql(u8, tag, "page")) {
         err_meta.* = .{
             .context_span_start = ctxt_span_start,
